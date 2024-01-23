@@ -63,7 +63,7 @@ import { OrderListFilterEvent, OrderListFilterOptions, OrderListSelectionChangeE
                     <ng-template *ngTemplateOutlet="moveBottomIconTemplate"></ng-template>
                 </button>
             </div>
-            <div class="p-orderlist-list-container" [attr.data-pc-section]="'container'">
+            <div class="p-orderlist-list-container" [ngClass]="{ 'p-focus': focused }" [attr.data-pc-section]="'container'">
                 <div class="p-orderlist-header" *ngIf="header || headerTemplate" [attr.data-pc-section]="'header'">
                     <div class="p-orderlist-title" *ngIf="!headerTemplate">{{ header }}</div>
                     <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
@@ -222,6 +222,12 @@ export class OrderList implements AfterViewChecked, AfterContentInit {
      * @group Props
      */
     @Input() metaKeySelection: boolean = false;
+
+    /**
+     * Whether to focus on the first visible or selected element.
+     * @group Props
+     */
+    @Input() autoOptionFocus: boolean = false;
 
     /**
      * Whether to enable dragdrop based reordering.
@@ -689,11 +695,14 @@ export class OrderList implements AfterViewChecked, AfterContentInit {
     }
 
     onListFocus(event) {
-        const focusableEl = DomHandler.findSingle(this.listViewChild.nativeElement, '[data-p-highlight="true"]') || DomHandler.findSingle(this.listViewChild.nativeElement, '[data-pc-section="item"]');
+        this.focused = true;
+        const focusableEl = this.autoOptionFocus
+            ? DomHandler.findSingle(this.listViewChild.nativeElement, '[data-p-highlight="true"]') || DomHandler.findSingle(this.listViewChild.nativeElement, '[data-pc-section="item"]')
+            : DomHandler.findSingle(this.listViewChild.nativeElement, '[data-p-highlight="true"]');
 
         if (focusableEl) {
             const findIndex = ObjectUtils.findIndexInList(focusableEl, this.listViewChild.nativeElement.children);
-            this.focused = true;
+
             const index = this.focusedOptionIndex !== -1 ? this.focusedOptionIndex : focusableEl ? findIndex : -1;
 
             this.changeFocusedOptionIndex(index);

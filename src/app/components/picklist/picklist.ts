@@ -111,7 +111,7 @@ import {
                     <ng-template *ngTemplateOutlet="moveBottomIconTemplate"></ng-template>
                 </button>
             </div>
-            <div class="p-picklist-list-wrapper p-picklist-source-wrapper" [attr.data-pc-section]="'sourceWrapper'" [attr.data-pc-group-section]="'listWrapper'">
+            <div [ngClass]="{'p-focus': focused}" class="p-picklist-list-wrapper p-picklist-source-wrapper" [attr.data-pc-section]="'sourceWrapper'" [attr.data-pc-group-section]="'listWrapper'">
                 <div class="p-picklist-header" *ngIf="sourceHeader || sourceHeaderTemplate" [attr.data-pc-section]="'sourceHeader'" [attr.data-pc-group-section]="'header'">
                     <div class="p-picklist-title" *ngIf="!sourceHeaderTemplate">{{ sourceHeader }}</div>
                     <ng-container *ngTemplateOutlet="sourceHeaderTemplate"></ng-container>
@@ -220,7 +220,7 @@ import {
                     <ng-template *ngTemplateOutlet="moveAllToSourceIconTemplate; context: { $implicit: viewChanged }"></ng-template>
                 </button>
             </div>
-            <div class="p-picklist-list-wrapper p-picklist-target-wrapper" [attr.data-pc-section]="'targetWrapper'" [attr.data-pc-group-section]="'listwrapper'">
+            <div [ngClass]="{'p-focus': focused}" class="p-picklist-list-wrapper p-picklist-target-wrapper" [attr.data-pc-section]="'targetWrapper'" [attr.data-pc-group-section]="'listwrapper'">
                 <div class="p-picklist-header" *ngIf="targetHeader || targetHeaderTemplate" [attr.data-pc-section]="'targetHead'" [attr.data-pc-group-section]="'header'">
                     <div class="p-picklist-title" *ngIf="!targetHeaderTemplate">{{ targetHeader }}</div>
                     <ng-container *ngTemplateOutlet="targetHeaderTemplate"></ng-container>
@@ -472,6 +472,11 @@ export class PickList implements AfterViewChecked, AfterContentInit {
      * @group Props
      */
     @Input() metaKeySelection: boolean = false;
+    /**
+     * Whether to focus on the first visible or selected element.
+     * @group Props
+     */
+    @Input() autoOptionFocus: boolean | undefined;
     /**
      * Whether to enable dragdrop based reordering.
      * @group Props
@@ -1316,11 +1321,11 @@ export class PickList implements AfterViewChecked, AfterContentInit {
     }
 
     onListFocus(event, listType) {
+        this.focused[listType === this.SOURCE_LIST ? 'sourceList' : 'targetList'] = true;
         let listElement = this.getListElement(listType);
-        const selectedFirstItem = DomHandler.findSingle(listElement, 'li.p-picklist-item.p-highlight') || DomHandler.findSingle(listElement, 'li.p-picklist-item');
+        const selectedFirstItem = this.autoOptionFocus ?  DomHandler.findSingle(listElement, 'li.p-picklist-item.p-highlight') || DomHandler.findSingle(listElement, 'li.p-picklist-item') : DomHandler.findSingle(listElement, 'li.p-picklist-item.p-highlight') ;
         const findIndex = ObjectUtils.findIndexInList(selectedFirstItem, listElement.children);
 
-        this.focused[listType === this.SOURCE_LIST ? 'sourceList' : 'targetList'] = true;
         const index = this.focusedOptionIndex !== -1 ? this.focusedOptionIndex : selectedFirstItem ? findIndex : -1;
 
         this.changeFocusedOptionIndex(index, listType);
