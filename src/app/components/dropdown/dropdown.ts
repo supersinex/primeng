@@ -584,7 +584,7 @@ export class Dropdown implements OnInit, AfterViewInit, AfterContentInit, AfterV
      * Whether to focus on the first visible or selected element when the overlay panel is shown.
      * @group Props
      */
-    @Input() autoOptionFocus: boolean = true;
+    @Input() autoOptionFocus: boolean = false;
     /**
      * Applies focus to the filter element when the overlay is shown.
      * @group Props

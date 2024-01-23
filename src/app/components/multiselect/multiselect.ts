@@ -800,7 +800,7 @@ export class MultiSelect implements OnInit, AfterViewInit, AfterContentInit, Aft
      * Whether to focus on the first visible or selected element when the overlay panel is shown.
      * @group Props
      */
-    @Input() autoOptionFocus: boolean = true;
+    @Input() autoOptionFocus: boolean = false;
     /**
      * Callback to invoke when value changes.
      * @param {MultiSelectChangeEvent} event - Custom change event.

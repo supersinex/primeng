@@ -272,7 +272,7 @@ export class Listbox implements AfterContentInit, OnInit, ControlValueAccessor, 
      * Whether to focus on the first visible or selected element when the overlay panel is shown.
      * @group Props
      */
-    @Input() autoOptionFocus: boolean | undefined = true;
+    @Input() autoOptionFocus: boolean | undefined = false;
     /**
      * When enabled, the focused option is selected.
      * @group Props

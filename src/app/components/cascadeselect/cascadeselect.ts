@@ -377,7 +377,7 @@ export class CascadeSelect implements OnInit, AfterContentInit {
      * Whether to focus on the first visible or selected element when the overlay panel is shown.
      * @group Props
      */
-    @Input() autoOptionFocus: boolean = true;
+    @Input() autoOptionFocus: boolean = false;
     /**
      * Style class of the component.
      * @group Props
