@@ -92,7 +92,7 @@ import {
                     [draggable]="tree.draggableNodes"
                     (dragstart)="onDragStart($event)"
                     (dragend)="onDragStop($event)"
-                    [ngClass]="{ 'p-treenode-selectable': tree.selectionMode && node.selectable !== false, 'p-treenode-dragover': draghoverNode, 'p-highlight': isSelected() }"
+                    [ngClass]="{ 'p-treenode-selectable': tree.selectionMode && node.selectable !== false, 'p-treenode-dragover': draghoverNode, 'p-highlight': isSelected() && highlightOnSelect }"
                 >
                     <button type="button" [attr.data-pc-section]="'toggler'" class="p-tree-toggler p-link" (click)="toggle($event)" pRipple tabindex="-1" aria-hidden="true">
                         <ng-container *ngIf="!tree.togglerIconTemplate">
@@ -223,6 +223,8 @@ export class UITreeNode implements OnInit {
     @Input() indentation: number | undefined;
 
     @Input() itemSize: number | undefined;
+
+    @Input() highlightOnSelect: boolean;
 
     tree: Tree;
 
@@ -765,6 +767,7 @@ export class UITreeNode implements OnInit {
                             [index]="getIndex(scrollerOptions, index)"
                             [itemSize]="scrollerOptions.itemSize"
                             [indentation]="indentation"
+                            [highlightOnSelect]="highlightOnSelect"
                         ></p-treeNode>
                     </ul>
                 </ng-template>
@@ -784,6 +787,7 @@ export class UITreeNode implements OnInit {
                             [lastChild]="lastChild"
                             [index]="index"
                             [level]="0"
+                            [highlightOnSelect]="highlightOnSelect"
                         ></p-treeNode>
                     </ul>
                 </div>
@@ -809,7 +813,7 @@ export class UITreeNode implements OnInit {
                 </ng-container>
             </div>
             <table *ngIf="value && value[0]">
-                <p-treeNode [node]="value[0]" [root]="true"></p-treeNode>
+                <p-treeNode [node]="value[0]" [root]="true" [highlightOnSelect]="highlightOnSelect"></p-treeNode>
             </table>
             <div class="p-tree-empty-message" *ngIf="!loading && (getRootNode() == null || getRootNode().length === 0)">
                 <ng-container *ngIf="!emptyMessageTemplate; else emptyFilter">
@@ -1016,6 +1020,11 @@ export class Tree implements OnInit, AfterContentInit, OnChanges, OnDestroy, Blo
         this._virtualNodeHeight = val;
         console.warn('The virtualNodeHeight property is deprecated, use virtualScrollItemSize property instead.');
     }
+    /**
+     * Whether to highlight when select.
+     * @group Props
+     */
+    @Input() highlightOnSelect: boolean = true;
     /**
      * Callback to invoke on selection change.
      * @param {(TreeNode<any> | TreeNode<any>[] | null)} event - Custom selection change event.

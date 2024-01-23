@@ -3492,7 +3492,7 @@ export class SortIcon implements OnInit, OnDestroy {
     host: {
         class: 'p-element',
         '[class.p-selectable-row]': 'isEnabled()',
-        '[class.p-highlight]': 'selected',
+        '[class.p-highlight]': 'selected && highlightOnSelect',
         '[attr.tabindex]': 'setRowTabIndex()',
         '[attr.data-p-highlight]': 'selected',
         '[attr.data-p-selectable-row]': 'true'
@@ -3504,6 +3504,8 @@ export class SelectableRow implements OnInit, OnDestroy {
     @Input('pSelectableRowIndex') index: number | undefined;
 
     @Input() pSelectableRowDisabled: boolean | undefined;
+
+    @Input() highlightOnSelect: boolean = true;
 
     selected: boolean | undefined;
 

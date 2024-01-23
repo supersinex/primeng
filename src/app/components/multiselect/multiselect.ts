@@ -57,7 +57,7 @@ export const MULTISELECT_VALUE_ACCESSOR: any = {
             pRipple
             [ngStyle]="{ height: itemSize + 'px' }"
             class="p-multiselect-item"
-            [ngClass]="{ 'p-multiselect-item': true, 'p-highlight': selected, 'p-disabled': disabled, 'p-focus': focused }"
+            [ngClass]="{ 'p-multiselect-item': true, 'p-highlight': selected && highlightOnSelect, 'p-disabled': disabled, 'p-focus': focused }"
             [id]="id"
             [attr.aria-label]="label"
             [attr.aria-setsize]="ariaSetSize"
@@ -110,6 +110,8 @@ export class MultiSelectItem {
     @Input() template: TemplateRef<any> | undefined;
 
     @Input() checkIconTemplate: TemplateRef<any> | undefined;
+
+    @Input() highlightOnSelect: boolean;
 
     @Output() onClick: EventEmitter<any> = new EventEmitter();
 
@@ -330,6 +332,7 @@ export class MultiSelectItem {
                                             <p-multiSelectItem
                                                 [id]="id + '_' + getOptionIndex(i, scrollerOptions)"
                                                 [option]="option"
+                                                [highlightOnSelect]="highlightOnSelect"
                                                 [selected]="isSelected(option)"
                                                 [label]="getOptionLabel(option)"
                                                 [disabled]="isOptionDisabled(option)"
@@ -508,6 +511,11 @@ export class MultiSelect implements OnInit, AfterViewInit, AfterContentInit, Aft
     get maxSelectedLabels(): number | null | undefined {
         return this._maxSelectedLabels;
     }
+    /**
+     * Whether to highlight when select.
+     * @group Props
+     */
+    @Input() highlightOnSelect: boolean = true;
     /**
      * Decides how many selected item labels to show at most.
      * @group Props
