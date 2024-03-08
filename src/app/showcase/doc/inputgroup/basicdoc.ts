@@ -7,12 +7,13 @@ import { Code } from '../../domain/code';
         <app-docsectiontext>
             <p>An InputGroup is created by wrapping the add-ons inside the <i>p-inputGroup</i> element.</p>
         </app-docsectiontext>
-        <div class="card flex flex-column md:flex-row gap-3">
+        <div class="card">
             <p-inputGroup>
                 <p-inputGroupAddon>
                     <i class="pi pi-user"></i>
                 </p-inputGroupAddon>
-                <input pInputText placeholder="Username" />
+
+                <p-dropdown  placeholder="Select a City"></p-dropdown>
             </p-inputGroup>
 
             <p-inputGroup>
